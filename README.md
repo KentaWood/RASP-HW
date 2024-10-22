@@ -63,6 +63,7 @@ Write a function that performs sequence reversal "autogeneratively".
 That is, it will take a sequence as input, and the sequence will contain a special token `$` that marks the "end of the prompt".
 The text before the `$` should be unchanged, and the text after the `$` should be the text before the `$` reversed (this text represents the model's response to the prompt).
 The code should be robuse to the case when the length of text after `$` is not the same as the length of text before `$`.
+
 **Solution:**
 ```
 >dollar_loc = select_from_last(tokens, "$");
