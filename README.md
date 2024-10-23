@@ -64,21 +64,20 @@ That is, it will take a sequence as input, and the sequence will contain a speci
 The text before the `$` should be unchanged, and the text after the `$` should be the text before the `$` reversed (this text represents the model's response to the prompt).
 The code should be robuse to the case when the length of text after `$` is not the same as the length of text before `$`.
 
-**Solution:**
+**Solution: (what I Have, did not 100% finish)**
 ```
->dollar_loc = select_from_last(tokens, "$");
+>ollar = select_from_first(tokens, "$");
 
->def get_dollar_pos(seq) {
-    return aggregate(dollar_loc, indices);
-}
+>dollar_p = aggregate(dollar, indices);
 
->def reverse_second_half(seq, dollar_pos) {
-    return aggregate(select(indices, dollar_pos + dollar_pos - indices, ==), seq, " ");
+>def secondhalf(seq) {
+    reverse_selector = select(indices, dollar_p < indices, ==);
+    return aggregate(reverse_selector, reverse_func(seq));
 }
 
 >def reverse_ag(seq) {
-    dollar_pos = get_dollar_pos(seq);
-    return aggregate(select(indices, indices <= dollar_pos, ==), seq) + reverse_second_half(seq, dollar_pos);
+    reversed_indices = length - indices - 1;
+    return aggregate(select(reversed_indices, indices, ==), seq);
 }
 > reverse_ag(tokens)("hello$     ")
 "hello$olleh"
